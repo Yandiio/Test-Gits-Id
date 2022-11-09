@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Services\PublisherService;
 use Illuminate\Http\Request;
+use App\Http\Requests\PublisherRequest;
 
 class PublisherController extends Controller
 {
@@ -38,10 +39,10 @@ class PublisherController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  PublisherRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PublisherRequest $request)
     {
         $result = ['status' => 200];
 
@@ -83,10 +84,10 @@ class PublisherController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  PublisherRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(PublisherRequest $request)
     {
         $result = ['status' => 200];
 

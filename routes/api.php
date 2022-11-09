@@ -33,11 +33,11 @@ Route::group([
 });
 
 Route::prefix('book')->controller(BookController::class)->group(function () {
-    Route::get('/book', 'index');
-    Route::get('/book/detail', 'show');
-    Route::put('/book/update', 'update');
-    Route::post('/book/create', 'store');
-    Route::delete('/book/delete', 'destroy');
+    Route::get('/', 'index');
+    Route::get('/detail', 'show');
+    Route::put('/update', 'update');
+    Route::post('/create', 'store');
+    Route::delete('/delete', 'destroy');
 });
 
 

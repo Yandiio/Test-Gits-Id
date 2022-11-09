@@ -14,7 +14,9 @@ Class AuthorRepository
      */
     public function getById($id) {
         $data = Author::where('id', '=', $id)->get();
-
+        foreach ($data as $value) {
+            $value['book'] = $value->book;
+        }
         return $data;
     }
     
@@ -25,6 +27,10 @@ Class AuthorRepository
      */
     public function getAllAuthor() {
         $data = Author::all();
+
+        foreach ($data as $value) {
+            $value['book'] = $value->book;
+        }
 
         return $data;
     }
@@ -58,7 +64,7 @@ Class AuthorRepository
      * @return Response
      */
     public function updateAuthor($data, $id) {
-        $dataExist = Author::find($id);
+        $dataExist = Author::findOrFail($id);
 
         $dataExist->author_name = $data['author_name'];
         $dataExist->phone = $data['phone'];
@@ -79,7 +85,7 @@ Class AuthorRepository
      * @return Response
      */
     public function removeAuthor($id) {
-        $data = Author::find($id);
+        $data = Author::findOrFail($id);
         $data->delete();
 
         return response()->json(['message' => 'data berhasil dihapus']);

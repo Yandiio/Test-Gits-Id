@@ -3,6 +3,7 @@
 namespace App\Http\Repositories;
 
 use App\Models\Book;
+use App\Models\BookAuthor;
 use Illuminate\Http\Request;
 
 
@@ -31,10 +32,20 @@ Class BookRepository {
         $limit = $request->limit;
         $page = ($limit * $request->page) - $limit;
 
+
         if ($limit != null || $page != null) {
             $data = Book::skip($page)
                     ->take($limit)
                     ->get();
+        }
+
+        foreach ($data as $val) {
+            // remove author id & publisher id from response
+            unset($val['author_id']);   
+            unset($val['publisher_id']);   
+
+            $val['author'] = $val->author;   
+            $val['publisher'] = $val->publisher;   
         }
 
         return $data;
@@ -57,7 +68,15 @@ Class BookRepository {
         $book->publisher_id = $data['publisher_id'];
         $book->created_at =  \Carbon\Carbon::now();
 
-        $book->save();
+        $res = $book->save();
+
+        if ($res) {
+            $book_author = new BookAuthor();
+            $book_author->author_id = $data['author_id'];
+            $book_author->book_id = $book->id;
+            
+            $book_author->save();
+        }
 
         return $book;
     }
@@ -70,7 +89,7 @@ Class BookRepository {
      * @return Response
      */
     public function updateBook($data, $id) {
-        $dataExist = Book::find($id);
+        $dataExist = Book::findOrFail($id);
 
         $dataExist->book_name = $data['book_name'];
         $dataExist->date_release = $data['date_release'];
@@ -82,7 +101,7 @@ Class BookRepository {
 
         $dataExist->update();
 
-        return $data;
+        return $dataExist;
     }
 
     /**
@@ -92,7 +111,7 @@ Class BookRepository {
      * @return Response
      */
     public function removeBook($id) {
-        $data = Book::find($id);
+        $data = Book::findOrFail($id);
         $data->delete();
 
         return response()->json(['message' => 'data berhasil dihapus']);

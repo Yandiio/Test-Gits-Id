@@ -5,6 +5,7 @@ namespace App\Http\Services;
 use App\Http\Repositories\AuthorRepository;
 use DB;
 use Illuminate\Http\Request;
+use App\Http\Requests\AuthorRequest;
 
 Class AuthorService {
 
@@ -21,13 +22,11 @@ Class AuthorService {
      * @param \AuthorRequest
      * @return \Illuminate\Http\Response
      */
-    public function save(Request $request) {
+    public function save(AuthorRequest $request) {
 
         DB::beginTransaction();
         try {
-            $data = $request->only([
-                'author_name', 'phone', 'city', 'address', 'state'
-            ]);
+            $data = $request->validated();
     
             $res = $this->authorRepository->storeAuthor($data);
             DB::commit();
@@ -87,13 +86,11 @@ Class AuthorService {
      * @param $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id) 
+    public function update(AuthorRequest $request, $id) 
     {    
         DB::beginTransaction();
         try {
-            $data = $request->only([
-                'author_name', 'phone', 'city', 'address', 'state'
-            ]);
+            $data = $request->validated();
     
             $res = $this->authorRepository->updateAuthor($data, $id);
             DB::commit();

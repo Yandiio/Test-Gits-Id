@@ -60,7 +60,7 @@ Class PublisherRepository {
      * @return Response
      */
     public function updatePublisher($data, $id) {
-        $dataExist = Publisher::find($id);
+        $dataExist = Publisher::findOrFail($id);
 
         $dataExist->publisher_name = $data['publisher_name'];
         $dataExist->phone_number = $data['phone_number'];
@@ -82,7 +82,7 @@ Class PublisherRepository {
      * @return Response
      */
     public function removePublisher($id) {
-        $data = Publisher::find($id);
+        $data = Publisher::findOrFail($id);
         $data->delete();
 
         return response()->json(['message' => 'data berhasil dihapus']);

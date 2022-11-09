@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Services\BookService;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\BookRequest;
 
 class BookController extends Controller
 {
@@ -41,10 +42,10 @@ class BookController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  BookRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(BookRequest $request)
     {
         $result = ['status' => 200];
 
@@ -86,15 +87,17 @@ class BookController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  BookRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(BookRequest $request)
     {
         $result = ['status' => 200];
 
         try {
+        
             $result = $this->bookService->update($request, $request->id);
+        
         } catch (Exception $e) {
             $result = [
                 'status' => 500,

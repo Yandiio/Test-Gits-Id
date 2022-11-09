@@ -17,7 +17,18 @@ class Book extends Model
     protected $table = 'book';
 
     protected $fillable = [
-        'book_name','date_release','author_id', 'descrpition','number_of_page', 'publisher_id'
+        'book_name','date_release','author_id', 'description','number_of_page', 'publisher_id'
     ];
 
+    protected $hidden = ['pivot'];
+
+    public function author()
+    {
+    	return $this->belongsToMany('App\Models\Author');
+    }
+
+    public function publisher()
+    {
+    	return $this->belongsTo('App\Models\Publisher');
+    }
 }

@@ -17,4 +17,11 @@ class Author extends Model
     protected $table = 'author';
 
     protected $fillable = ['author_name', 'phone', 'city', 'address', 'state'];
+
+    protected $hidden = ['pivot'];
+
+    public function book()
+    {
+    	return $this->belongsToMany('App\Models\Book');
+    }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Services;
 use App\Http\Repositories\PublisherRepository;
 use DB;
 use Illuminate\Http\Request;
+use App\Http\Requests\PublisherRequest;
 
 Class PublisherService {
 
@@ -21,13 +22,11 @@ Class PublisherService {
      * @param \PublisherRequest
      * @return \Illuminate\Http\Response
      */
-    public function save(Request $request) {
+    public function save(PublisherRequest $request) {
 
         DB::beginTransaction();
         try {
-            $data = $request->only([
-                'publisher_name', 'phone_number', 'city', 'address', 'state', 'zip'
-            ]);
+            $data = $request->validated();
     
             $res = $this->publisherRepository->storePublisher($data);
             DB::commit();
@@ -87,13 +86,11 @@ Class PublisherService {
      * @param $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id) 
+    public function update(PublisherRequest $request, $id) 
     {    
         DB::beginTransaction();
         try {
-            $data = $request->only([
-                'publisher_name', 'phone_number', 'city', 'address', 'state', 'zip'
-            ]);
+            $data = $request->validated();
     
             $res = $this->publisherRepository->updatePublisher($data, $id);
             DB::commit();

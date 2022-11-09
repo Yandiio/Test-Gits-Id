@@ -17,4 +17,10 @@ class Publisher extends Model
     protected $table = 'publisher';
 
     protected $fillable = ['publisher_name', 'phone_number', 'city', 'address', 'state', 'zip'];
+
+    
+    public function book()
+    {
+    	return $this->hasOne('App\Models\Book');
+    }
 }

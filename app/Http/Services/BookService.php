@@ -5,6 +5,7 @@ namespace App\Http\Services;
 use App\Http\Repositories\BookRepository;
 use DB;
 use Illuminate\Http\Request;
+use App\Http\Requests\BookRequest;
 
 Class BookService 
 {
@@ -22,18 +23,12 @@ Class BookService
      * @param \BookRequest
      * @return \Illuminate\Http\Response
      */
-    public function save(Request $request) {
+    public function save(BookRequest $request) {
 
         DB::beginTransaction();
         try {
-            $data = $request->only([
-                'book_name',
-                'date_release',
-                'number_of_page',
-                'description',
-                'publisher_id',
-                'author_id',
-            ]);
+            $data = $request->validated();
+
     
             $res = $this->bookRepository->storeBook($data);
             DB::commit();
@@ -94,18 +89,11 @@ Class BookService
      * @param $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id) 
+    public function update(BookRequest $request, $id) 
     {    
         DB::beginTransaction();
         try {
-            $data = $request->only([
-                'book_name',
-                'date_release',
-                'number_of_page',
-                'description',
-                'publisher_id',
-                'author_id',
-            ]);
+            $data = $request->validated();
     
             $res = $this->bookRepository->updateBook($data, $id);
             DB::commit();
