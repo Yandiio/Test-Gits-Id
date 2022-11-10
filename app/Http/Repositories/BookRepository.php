@@ -18,6 +18,16 @@ Class BookRepository {
     public function getById($id) {
         $data = Book::where('id', '=', $id)->get();
 
+        foreach ($data as $val) {
+            // remove author id & publisher id from response
+            unset($val['author_id']);   
+            unset($val['publisher_id']);   
+
+            $val['author'] = $val->author;   
+            $val['publisher'] = $val->publisher;   
+        }
+
+
         return $data;
     }
     
