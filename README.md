@@ -19,11 +19,29 @@ Laravel is a web application framework with expressive, elegant syntax. We belie
 - [Robust background job processing](https://laravel.com/docs/queues).
 - [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Laravel is accessible, powerful, and provides tools required for large, robust applications.  
 
-## Installation
 
-- Import test.db into PostgreSQL
-- 
+----
+## Instalasi Project
+
+- Import hasil export.pgsql ke database PostgreSQL. *
+- Eksekusi command berikut untuk seed table:  
+    ```php 
+    php artisan db:seed
+    ```
+- Untuk running service, eksekusi command berikut:
+    ```php 
+    php artisan serve
+    ```
+- Untuk menjalankan semua unit test, eksekusi command berikut:
+    ```php 
+    ./vendor/bin/phpunit
+    ```
+
+    *Note : Jika gagal import ke Postgre, maka anda bisa eksekusi line berikut:  
+    ```php
+    php artisan migrate:fresh
+    ```
 
 
