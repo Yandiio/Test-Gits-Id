@@ -48,7 +48,7 @@ Class AuthorService {
             $data = $this->authorRepository->getAllAuthor();
 
             if ($data->isEmpty()) {
-                $data = ['message' => 'data not found'];
+                return response()->json(['code' => 404, 'message' => 'author is not found'], 404);
             }
 
         } catch(Exception $e) {
@@ -69,11 +69,11 @@ Class AuthorService {
             $data = $this->authorRepository->getById($id);
 
             if ($data->isEmpty()) {
-                $data = ['message' => 'author is not found'];
+                return response()->json(['code' => 404, 'message' => 'author is not found'], 404);
             }
 
         } catch(Exception $e) {
-            return response()->json(['code' => 500, 'error' => $e->getMessage]);
+            return response()->json(['code' => 500, 'error' => $e->getMessage], 500);
         }
 
         return response()->json(['code' => 200, 'data' => $data]);
@@ -115,7 +115,7 @@ Class AuthorService {
             $data = $this->authorRepository->getById($id);
     
             if (isset($data)) {
-                $data = ['message' => 'author not found'];
+                return response()->json(['code' => 404, 'message' => 'author is not found'], 404);
             }
 
             $res = $this->authorRepository->removeAuthor($id);

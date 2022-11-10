@@ -55,7 +55,7 @@ Class BookService
             }
 
         } catch(Exception $e) {
-            return response()->json(['code' => 500, 'error' => $e->getMessage]);
+            return response()->json(['code' => 500, 'error' => $e->getMessage], 500);
         }
 
         return response()->json(['code' => 200, 'data' => $data]);
@@ -72,11 +72,11 @@ Class BookService
             $data = $this->bookRepository->getById($id);
 
             if ($data->isEmpty()) {
-                $data = ['message' => 'book is not found'];
+                return response()->json(['code' => 404, 'message' => 'book is not found'], 404);
             }
 
         } catch(Exception $e) {
-            return response()->json(['code' => 500, 'error' => $e->getMessage]);
+            return response()->json(['code' => 500, 'error' => $e->getMessage], 505);
         }
 
         return response()->json(['code' => 200, 'data' => $data]);
@@ -94,13 +94,19 @@ Class BookService
         DB::beginTransaction();
         try {
             $data = $request->validated();
+
+            $dataExist = $this->bookRepository->getById($id);
+
+            if ($dataExist->isEmpty()) {
+                return response()->json(['code' => 404, 'message' => 'book is not found'], 404);
+            }
     
             $res = $this->bookRepository->updateBook($data, $id);
             DB::commit();
              
         } catch (Exception $e) {
             DB::rollback();
-            return response()->json(['code' => 500, 'error' => $e->getMessage]);
+            return response()->json(['code' => 500, 'error' => $e->getMessage], 500);
         }
 
         return response()->json(['code' => 200, 'message' => 'Success updating book']);
@@ -116,9 +122,9 @@ Class BookService
         DB::beginTransaction();
         try {
             $data = $this->bookRepository->getById($id);
-    
-            if (isset($data)) {
-                $data = ['message' => 'book not found'];
+
+            if ($data->isEmpty()) {
+                return response()->json(['code' => 404, 'message' => 'book is not found'], 404);
             }
 
             $res = $this->bookRepository->removeBook($id);
@@ -126,7 +132,7 @@ Class BookService
              
         } catch (Exception $e) {
             DB::rollback();
-            return response()->json(['code' => 500, 'error' => $e->getMessage]);
+            return response()->json(['code' => 500, 'error' => $e->getMessage], 500);
         }
 
         return response()->json(['code' => 200, 'message' => 'Success deleting book']);

@@ -69,11 +69,11 @@ Class PublisherService {
             $data = $this->publisherRepository->getById($id);
 
             if ($data->isEmpty()) {
-                $data = ['message' => 'publisher is not found'];
+                return response()->json(['code' => 404, 'message' => 'publisher is not found'], 404);
             }
 
         } catch(Exception $e) {
-            return response()->json(['code' => 500, 'error' => $e->getMessage]);
+            return response()->json(['code' => 500, 'error' => $e->getMessage], 500);
         }
 
         return response()->json(['code' => 200, 'data' => $data]);
@@ -91,6 +91,12 @@ Class PublisherService {
         DB::beginTransaction();
         try {
             $data = $request->validated();
+
+            $dataExist = $this->publisherRepository->getById($id);
+    
+            if ($dataExist->isEmpty()) {
+                return response()->json(['code' => 404, 'message' => 'publisher is not found'], 404);
+            }
     
             $res = $this->publisherRepository->updatePublisher($data, $id);
             DB::commit();
@@ -115,7 +121,7 @@ Class PublisherService {
             $data = $this->publisherRepository->getById($id);
     
             if (isset($data)) {
-                $data = ['message' => 'publisher not found'];
+                return response()->json(['code' => 404, 'message' => 'publisher is not found'], 404);
             }
 
             $res = $this->publisherRepository->removePublisher($id);
